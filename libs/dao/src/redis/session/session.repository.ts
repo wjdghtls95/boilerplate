@@ -1,15 +1,13 @@
 import { Injectable } from '@nestjs/common';
 import { randomUUID } from 'crypto';
 import { plainToInstance } from 'class-transformer';
-import { Redis } from 'ioredis';
-import { RedisFactory } from '@libs/common/database/redis/redis.factory';
-import { Session } from '@libs/dao/redis/session.entity';
+import { Session } from '@libs/dao/redis/session/session.entity';
+import { BaseRedisRepository } from '@libs/dao/base/base-redis.repository';
 
 @Injectable()
-export class SessionRepository {
-  redis: Redis;
+export class SessionRepository extends BaseRedisRepository {
   constructor() {
-    this.redis = RedisFactory.createRedisClient();
+    super();
   }
 
   static createSession(
@@ -42,9 +40,5 @@ export class SessionRepository {
 
   async delSession(userId: string): Promise<number> {
     return this.redis.del(userId);
-  }
-
-  async close(): Promise<'OK'> {
-    return this.redis.quit();
   }
 }

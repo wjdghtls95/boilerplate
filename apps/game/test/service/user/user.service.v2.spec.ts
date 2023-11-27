@@ -1,4 +1,4 @@
-import { GameServerConfig } from '../../src/config/game-server.config';
+import { GameServerConfig } from '../../../src/config/game-server.config';
 import {
   commonTypeOrmModuleOptions,
   gameTypeOrmModuleOptions,
@@ -11,17 +11,17 @@ import { UserModule } from '@libs/dao/common/user/user.module';
 import { UserDetail } from '@libs/dao/game/user-detail/user-detail.entity';
 import { SessionModule } from '@libs/dao/redis/session/session.module';
 import { INTERNAL_ERROR_CODE } from '@libs/common/constants/internal-error-code.constants';
-import { UserService } from '../../src/user/user.service';
-import { TestTransactionUtils } from '../utils/test-transaction.utils';
+import { UserService } from '../../../src/user/user.service';
+import { TestTransactionUtils } from '@libs/common/utils/test/test-transaction.utils';
 import { UserDetailModule } from '@libs/dao/game/user-detail/user-detail.module';
-import { TestUserUtils } from '@libs/common/utils/test/test-user.utils';
-import { UpdateUserNickNameInDto } from '../../src/user/dto/update-user-nick-name-in.dto';
+import { TestUserUtils } from '../../utils/test-user.utils';
+import { UpdateUserNickNameInDto } from '../../../src/user/dto/update-user-nick-name-in.dto';
 import { TestDataSourceUtils } from '@libs/common/utils/test/test-data-source.utils';
 import { TypeOrmHelper } from '@libs/common/database/typeorm/typeorm.helper';
 import { DATABASE_NAME } from '@libs/common/constants/database.constants';
 
 // 1, 2, 3, 4 순서대로 실행
-describe('UserServiceV2', () => {
+describe('user service v2', () => {
   let module: TestingModule;
   let userService: UserService;
   let sessionRepository: SessionRepository;

@@ -2,7 +2,7 @@ import { INestApplication, Logger } from '@nestjs/common';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import * as Sentry from '@sentry/node';
 import * as compression from 'compression';
-import { SWAGGER_CUSTOM_OPTIONS } from '@libs/common/constants/swagger.constants';
+import { SWAGGER_CUSTOM_OPTIONS } from '@libs/common/constants/swagger.constants.';
 
 export class GameServer {
   constructor(private readonly app: INestApplication) {}
@@ -10,8 +10,8 @@ export class GameServer {
   async init(): Promise<void> {
     if (process.env.NODE_ENV !== 'prod') {
       const config = new DocumentBuilder()
-        .setTitle('4-Ground-9 Game Server')
-        .setDescription('The 4-Ground-9 API description')
+        .setTitle('game-server-boilerplate project')
+        .setDescription('The game-server-boilerplate project description')
         .setVersion('1.0')
         .addBasicAuth(
           {

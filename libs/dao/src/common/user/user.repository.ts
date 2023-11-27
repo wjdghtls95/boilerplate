@@ -4,6 +4,14 @@ import { User } from '@libs/dao/common/user/user.entity';
 
 @EntityRepository(User)
 export class UserRepository extends BaseRepository<User> {
+  async findById(id: number): Promise<User> {
+    return await this.getQueryBuilder()
+      .where(`${this.alias}.id=:id`, {
+        id: id,
+      })
+      .getOne();
+  }
+
   async findByNid(nid: string): Promise<User> {
     return await this.getQueryBuilder()
       .where(`${this.alias}.nid=:nid`, { nid: nid })
