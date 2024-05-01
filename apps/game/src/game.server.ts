@@ -1,7 +1,7 @@
 import { INestApplication, Logger } from '@nestjs/common';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import * as Sentry from '@sentry/node';
-import * as compression from 'compression';
+import compression from 'compression';
 import { SWAGGER_CUSTOM_OPTIONS } from '@libs/common/constants/swagger.constants.';
 
 export class GameServer {
@@ -32,13 +32,6 @@ export class GameServer {
         SWAGGER_CUSTOM_OPTIONS,
       );
     }
-
-    this.app.use(compression({ level: 6 }));
-
-    Sentry.init({
-      dsn: process.env.SENTRY_DSN,
-      environment: process.env.NODE_ENV,
-    });
   }
 
   async run(): Promise<void> {

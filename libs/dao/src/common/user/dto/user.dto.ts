@@ -1,13 +1,17 @@
 import { ApiProperty } from '@nestjs/swagger';
+import { Exclude } from 'class-transformer';
 import { ExcludeBaseTimeDto } from '@libs/dao/base/time/dto/exclude-base.time.dto';
 
-export class UserDetailDto extends ExcludeBaseTimeDto {
+export class UserDto extends ExcludeBaseTimeDto {
   @ApiProperty()
   id: number;
 
   @ApiProperty()
-  userId: number;
+  nid: string;
 
   @ApiProperty()
-  loginAt: Date;
+  nickName: string;
+
+  @Exclude()
+  gameDbId: number;
 }

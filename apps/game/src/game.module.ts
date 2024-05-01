@@ -30,11 +30,16 @@ import { ClsModule } from 'nestjs-cls';
     ...Object.values(gameTypeOrmModuleOptions).map((options) =>
       TypeOrmExModule.forRoot(options),
     ),
+    // Redis
     SessionModule,
 
     // Dao
     AuthModule,
+
+    // Common
     UserModule,
+
+    // Game
     UserDetailModule,
   ],
   controllers: [GameController, LoginController, UserController],

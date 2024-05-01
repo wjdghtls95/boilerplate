@@ -16,6 +16,8 @@ lerna-debug.log*
 .env.test
 config/.game.test.env
 config/.*.test.env
+config /.game.test.env
+config /.*.test.env
 
 
 # OS
@@ -40,3 +42,6 @@ config/.*.test.env
 !.vscode/tasks.json
 !.vscode/launch.json
 !.vscode/extensions.json
+
+# packages
+package-lock.json
