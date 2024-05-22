@@ -1,7 +1,5 @@
 import { INestApplication, Logger } from '@nestjs/common';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
-import * as Sentry from '@sentry/node';
-import compression from 'compression';
 import { SWAGGER_CUSTOM_OPTIONS } from '@libs/common/constants/swagger.constants.';
 
 export class GameServer {

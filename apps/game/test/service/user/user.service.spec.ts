@@ -11,14 +11,11 @@ import { UserModule } from '@libs/dao/common/user/user.module';
 import { UserDetail } from '@libs/dao/game/user-detail/user-detail.entity';
 import { SessionModule } from '@libs/dao/redis/session/session.module';
 import { INTERNAL_ERROR_CODE } from '@libs/common/constants/internal-error-code.constants';
-import { UserService } from '../../../src/user/user.service';
-import { TestTransactionUtils } from '@libs/common/utils/test/test-transaction.utils';
 import { UserDetailModule } from '@libs/dao/game/user-detail/user-detail.module';
-import { TestUserUtils } from '../../utils/test-user.utils';
-import { UpdateUserNickNameInDto } from '../../../src/user/dto/update-user-nick-name-in.dto';
 import { TestDataSourceUtils } from '@libs/common/utils/test/test-data-source.utils';
 import { DATABASE_NAME } from '@libs/common/constants/database.constants';
 import { TypeOrmHelper } from '@libs/common/database/typeorm/typeorm.helper';
+import { UserService } from '../../../src/user/user.service';
 
 // 1, 2, 3, 4 순서대로 실행
 describe('user service', () => {
@@ -39,6 +36,7 @@ describe('user service', () => {
           ...commonTypeOrmModuleOptions,
           entities: [User],
         }),
+
         ...Object.values(gameTypeOrmModuleOptions).map((dataSource) =>
           TypeOrmExModule.forRoot({
             ...dataSource,
@@ -69,12 +67,12 @@ describe('user service', () => {
   // 2
   beforeEach(async () => {
     await TypeOrmHelper.Transactional([DATABASE_NAME.USER]);
-    await TestUserUtils.login(userId, gameDbId);
+    // await TestUserUtils.login(userId, gameDbId);
   });
 
   // 4
   afterEach(async () => {
-    await TestTransactionUtils.rollback();
+    // await TestTransactionUtils.rollback();
   });
 
   // 3

@@ -10,4 +10,4 @@ async function gameServer() {
   await gameServer.init();
   await gameServer.run();
 }
-gameServer();
+void gameServer();

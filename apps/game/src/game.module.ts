@@ -21,13 +21,19 @@ import { GameService } from './default/game.service';
 import { GameController } from './default/game.controller';
 import { RequestLogInterceptor } from '@libs/common/interceptor/request-log.interceptor';
 import { ClsModule } from 'nestjs-cls';
+import commonDatabaseConfig from '@libs/dao/config/common/common-database.config';
+import gameDatabaseConfig from '@libs/dao/config/game/game-database.config';
 
 @Module({
   imports: [
+    // config
     GameServerConfig,
+
     ClsModule.forRoot({ global: true, middleware: { mount: true } }),
-    TypeOrmExModule.forRoot(commonTypeOrmModuleOptions),
-    ...Object.values(gameTypeOrmModuleOptions).map((options) =>
+
+    TypeOrmExModule.forRoot(commonDatabaseConfig()),
+
+    ...Object.values(gameDatabaseConfig()).map((options) =>
       TypeOrmExModule.forRoot(options),
     ),
     // Redis
@@ -46,6 +52,7 @@ import { ClsModule } from 'nestjs-cls';
   providers: [
     { provide: APP_PIPE, useValue: new ValidationPipe({ transform: true }) },
     { provide: APP_FILTER, useClass: AllExceptionFilter },
+
     { provide: APP_INTERCEPTOR, useClass: RequestLogInterceptor },
     { provide: APP_INTERCEPTOR, useClass: UserLevelLockInterceptor },
     { provide: APP_INTERCEPTOR, useClass: TransactionInterceptor },
