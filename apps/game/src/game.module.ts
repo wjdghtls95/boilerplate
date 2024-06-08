@@ -1,10 +1,6 @@
 import { GameServerConfig } from './config/game-server.config';
 import { Module, ValidationPipe } from '@nestjs/common';
 import { TypeOrmExModule } from '@libs/common/database/typeorm/typeorm-ex.module';
-import {
-  commonTypeOrmModuleOptions,
-  gameTypeOrmModuleOptions,
-} from '@libs/common/database/typeorm/typeorm-module.options';
 import { SessionModule } from '@libs/dao/redis/session/session.module';
 import { AuthModule } from './auth/auth.module';
 import { LoginController } from './login/login.controller';
