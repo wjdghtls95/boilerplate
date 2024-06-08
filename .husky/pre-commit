@@ -1,0 +1,14 @@
+#!/usr/bin/env sh
+. "$(dirname -- "$0")/husky.sh"
+
+# Pull remote repository
+git fetch --prune && git pull
+
+# package install
+pnpm install
+
+# Run linting
+pnpm run lint
+
+# Run test
+pnpm run test
