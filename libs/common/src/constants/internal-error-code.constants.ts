@@ -13,7 +13,10 @@ export const INTERNAL_ERROR_CODE = {
   // USER DETAIL : 51 ~ 100
   USER_DETAIL_NOT_FOUND: 51, // 유저 상세 정보를 찾을 수 없음
 
-  // Database
+  // ADMIN: 9001 ~ 9100
+  ADMIN_USER_CONFLICT_EMAIL: 9001, // 어드민 유저 이메일 중복
+
+  // DATABASE
   DB_USER_LEVEL_LOCK_NOT_RELEASE: 9998, // db user level lock
   DB_UPDATE_FAILED: 9999, // db 업데이트 실패
 } as const;

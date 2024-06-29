@@ -14,7 +14,10 @@ export const INTERNAL_ERROR_CODE_DESC = {
   // USER DETAIL
   [e.USER_DETAIL_NOT_FOUND]: '유저 상세 정보를 찾을 수 없음',
 
-  // Database
+  // ADMIN
+  [e.ADMIN_USER_CONFLICT_EMAIL]: '어드민 유저 이메일 중복',
+
+  // DATABASE
   [e.DB_USER_LEVEL_LOCK_NOT_RELEASE]: 'db user level lock 미 해제',
   [e.DB_UPDATE_FAILED]: 'db 얻데이트 실패',
 } as const;

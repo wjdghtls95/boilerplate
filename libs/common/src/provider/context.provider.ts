@@ -27,38 +27,6 @@ export class ContextProvider {
     ContextProvider.set('session', value);
   }
 
-  static getQueryRunners(): Record<string, QueryRunner> {
-    return ContextProvider.get('queryRunners');
-  }
-
-  static getQueryRunner(database: string): QueryRunner {
-    const queryRunners = ContextProvider.getQueryRunners();
-
-    return !queryRunners || Object.values(queryRunners).isEmpty()
-      ? undefined
-      : queryRunners[database];
-  }
-
-  static setQueryRunners(queryRunners: Record<string, QueryRunner>): void {
-    ContextProvider.set('queryRunners', queryRunners);
-  }
-
-  static addQueryRunner(database: string, queryRunner: QueryRunner): void {
-    const queryRunners = this.getQueryRunners() ?? {};
-
-    if (queryRunners[database]) {
-      return;
-    }
-
-    queryRunners[database] = queryRunner;
-
-    this.setQueryRunners(queryRunners);
-  }
-
-  static releaseQueryRunner(): void {
-    ContextProvider.set('queryRunners', undefined);
-  }
-
   static getNow(): Date {
     return ContextProvider.get('now');
   }

@@ -1,22 +1,22 @@
+import { getDataSource } from '@libs/common/database/typeorm/typeorm-ex.module';
 import { QueryRunner } from 'typeorm';
 import { ContextProvider } from '@libs/common/provider/context.provider';
-import { getDataSource } from '@libs/common/database/typeorm/typeorm-ex.module';
 
 export class TypeOrmHelper {
   static async Transactional(
-    dataSourceNames: string[],
+    dataSourceNames: (string | Uint8Array)[],
   ): Promise<Record<string, QueryRunner>> {
     // 중복 생성 방지
     const uniqueDataSourceNames = dataSourceNames.distinct();
 
-    const existQueryRunners = ContextProvider.getQueryRunners() ?? {};
+    const existQueryRunners = TypeOrmHelper.getQueryRunners() ?? {};
 
-    const newDataSourceNames = uniqueDataSourceNames.filter(
-      (name) => !existQueryRunners[name],
-    );
+    const newDataSourceNames: string[] = uniqueDataSourceNames
+      .filter((name: string) => !existQueryRunners[name])
+      .map((it) => it as string);
 
     const newQueryRunners =
-      await TypeOrmHelper.getQueryRunners(newDataSourceNames);
+      await TypeOrmHelper.createQueryRunners(newDataSourceNames);
 
     await TypeOrmHelper.startTransactions([
       ...Object.values(existQueryRunners).filter(
@@ -27,13 +27,12 @@ export class TypeOrmHelper {
 
     const allQueryRunners = { ...existQueryRunners, ...newQueryRunners };
 
-    ContextProvider.setQueryRunners(allQueryRunners);
+    TypeOrmHelper.setQueryRunners(allQueryRunners);
 
     return allQueryRunners;
   }
 
-  // Internal Functions
-  static async getQueryRunner(dataSourceName: string): Promise<QueryRunner> {
+  static async createQueryRunner(dataSourceName: string): Promise<QueryRunner> {
     const dataSource = getDataSource(dataSourceName);
     if (!dataSource) return null;
 
@@ -43,11 +42,11 @@ export class TypeOrmHelper {
     return queryRunner;
   }
 
-  static async getQueryRunners(
+  static async createQueryRunners(
     dataSourceNames: string[],
   ): Promise<Record<string, QueryRunner>> {
     const dataSources = await Promise.all(
-      dataSourceNames.map((it) => TypeOrmHelper.getQueryRunner(it)),
+      dataSourceNames.map((it) => TypeOrmHelper.createQueryRunner(it)),
     );
 
     return Object.fromEntries(
@@ -59,17 +58,86 @@ export class TypeOrmHelper {
     await Promise.all(queryRunners.map((it) => it.startTransaction()));
   }
 
-  static async commitTransactions(queryRunners: QueryRunner[]): Promise<void> {
+  static async commitTransactions(): Promise<void> {
+    const queryRunnerRecord = TypeOrmHelper.getQueryRunners();
+    if (!queryRunnerRecord) {
+      return;
+    }
+
+    const queryRunners = Object.values(queryRunnerRecord).filter(
+      (it) => it.isTransactionActive,
+    );
+
+    if (!queryRunners?.length) {
+      return;
+    }
+
     await Promise.all(queryRunners.map((it) => it.commitTransaction()));
   }
 
-  static async rollbackTransactions(
-    queryRunners: QueryRunner[],
-  ): Promise<void> {
+  static async rollbackTransactions(): Promise<void> {
+    const queryRunnerRecord = TypeOrmHelper.getQueryRunners();
+    if (!queryRunnerRecord) {
+      return;
+    }
+
+    const queryRunners = Object.values(queryRunnerRecord).filter(
+      (it) => it.isTransactionActive,
+    );
+
+    if (!queryRunners?.length) {
+      return;
+    }
+
     await Promise.all(queryRunners.map((it) => it.rollbackTransaction()));
   }
 
-  static async releases(queryRunners: QueryRunner[]): Promise<void> {
+  static async releases(): Promise<void> {
+    const queryRunnerRecord = TypeOrmHelper.getQueryRunners();
+    if (!queryRunnerRecord) {
+      return;
+    }
+
+    const queryRunners = Object.values(queryRunnerRecord).filter(
+      (it) => !it.isReleased,
+    );
+
+    if (!queryRunners?.length) {
+      return;
+    }
+
     await Promise.all(queryRunners.map((it) => it.release()));
+  }
+
+  static setQueryRunners(queryRunners: Record<string, QueryRunner>): void {
+    ContextProvider.set('queryRunners', queryRunners);
+  }
+
+  static addQueryRunner(database: string, queryRunner: QueryRunner): void {
+    const queryRunners = this.getQueryRunners() ?? {};
+
+    if (queryRunners[database]) {
+      return;
+    }
+
+    queryRunners[database] = queryRunner;
+
+    this.setQueryRunners(queryRunners);
+  }
+
+  static getQueryRunners(): Record<string, QueryRunner> {
+    return ContextProvider.get('queryRunners');
+  }
+
+  static getQueryRunner(database: string): QueryRunner {
+    const queryRunners = TypeOrmHelper.getQueryRunners();
+
+    return !queryRunners || Object.values(queryRunners).isEmpty()
+      ? undefined
+      : queryRunners[database];
+  }
+
+  static releaseQueryRunner(): void {
+    ContextProvider.set('queryRunners', undefined);
   }
 }

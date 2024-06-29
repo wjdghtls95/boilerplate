@@ -5,7 +5,6 @@ import { TypeOrmExModule } from '@libs/common/database/typeorm/typeorm-ex.module
 import { commonTypeOrmModuleOptions } from '@libs/common/database/typeorm/typeorm-module.options';
 import { User } from '@libs/dao/common/user/user.entity';
 import { UserModule } from '@libs/dao/common/user/user.module';
-import { TestUserUtils } from '../../../../apps/game/test/utils/test-user.utils';
 import { TestTransactionUtils } from '@libs/common/utils/test/test-transaction.utils';
 import { TypeOrmHelper } from '@libs/common/database/typeorm/typeorm.helper';
 import { DATABASE_NAME } from '@libs/common/constants/database.constants';
@@ -20,6 +19,7 @@ describe('user repository test', () => {
     module = await Test.createTestingModule({
       imports: [
         TestEnvironConfig,
+
         TypeOrmExModule.forRoot({
           ...commonTypeOrmModuleOptions,
           entities: [User],

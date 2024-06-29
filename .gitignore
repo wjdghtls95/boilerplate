@@ -16,8 +16,6 @@ lerna-debug.log*
 .env.test
 config/.game.test.env
 config/.*.test.env
-config /.game.test.env
-config /.*.test.env
 
 
 # OS

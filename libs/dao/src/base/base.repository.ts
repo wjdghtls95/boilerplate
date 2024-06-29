@@ -11,12 +11,13 @@ import { UpsertOptions } from 'typeorm/repository/UpsertOptions';
 import { ContextProvider } from '@libs/common/provider/context.provider';
 import { SaveOptions } from 'typeorm/repository/SaveOptions';
 import { INTERNAL_ERROR_CODE } from '@libs/common/constants/internal-error-code.constants';
+import { TypeOrmHelper } from '@libs/common/database/typeorm/typeorm.helper';
 
 export abstract class BaseRepository<Entity> extends Repository<Entity> {
   protected readonly alias: string = this.metadata.tableName;
 
   private get entityManager(): EntityManager {
-    const queryRunner = ContextProvider.getQueryRunner(
+    const queryRunner = TypeOrmHelper.getQueryRunner(
       this.metadata.connection.name,
     );
 
