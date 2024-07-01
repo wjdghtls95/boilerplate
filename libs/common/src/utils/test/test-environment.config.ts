@@ -16,7 +16,7 @@ import gameDatabaseConfig from '@libs/dao/config/game/game-database.config';
       envFilePath: './config/.game.test.env',
       isGlobal: true,
       cache: true,
-      load: [commonDatabaseConfig, gameDatabaseConfig],
+      load: [commonDatabaseConfig(), gameDatabaseConfig()],
     }),
   ],
 })

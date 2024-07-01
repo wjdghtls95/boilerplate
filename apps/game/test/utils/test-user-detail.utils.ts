@@ -3,20 +3,8 @@ import { UserDetailRepository } from '@libs/dao/game/user-detail/user-detail.rep
 import { UserRepository } from '@libs/dao/common/user/user.repository';
 import { DATABASE_NAME } from '@libs/common/constants/database.constants';
 import { UserDetail } from '@libs/dao/game/user-detail/user-detail.entity';
-import { User } from '@libs/dao/common/user/user.entity';
 
 export class TestUserDetailUtils {
-  /**
-   * 유저 생성
-   */
-  static async createUser(user: User): Promise<User> {
-    const userRepository = UserRepository.instance(DATABASE_NAME.USER);
-
-    if (!userRepository) return null;
-
-    return user;
-  }
-
   /**
    * 유저 디테일 생성
    */

@@ -16,9 +16,6 @@ import { TestDataSourceUtils } from '@libs/common/utils/test/test-data-source.ut
 import { DATABASE_NAME } from '@libs/common/constants/database.constants';
 import { TypeOrmHelper } from '@libs/common/database/typeorm/typeorm.helper';
 import { UserService } from '../../../src/user/user.service';
-import { TestTransactionUtils } from '@libs/common/utils/test/test-transaction.utils';
-import { UpdateUserNickNameInDto } from '../../../src/user/dto/update-user-nick-name-in.dto';
-import { TestUserDetailUtils } from '../../utils/test-user-detail.utils';
 
 // 1, 2, 3, 4 순서대로 실행
 describe('user service', () => {
@@ -156,7 +153,7 @@ describe('user service', () => {
       // 다른 유저랑 닉네임이 겹칠때 true / false test
       const conflictNickName: string = 'conflictNickName';
 
-      await TestUserDetailUtils.createUser(
+      await TestUserUtils.createUser(
         User.create({
           id: userId_2,
           nid: `test${userId_2}`,
